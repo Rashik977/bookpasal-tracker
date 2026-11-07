@@ -1,14 +1,26 @@
 # my-tickets.ps1
 # PowerShell equivalent of my-tickets.sh for native Windows execution
+param(
+    [string]$TargetUser = ""
+)
 
 $ProjectNumber = "2"
-$Owner = "Rashik977"
+$ProjectOwner = "Rashik977"
 
 try {
-    $itemsJson = gh project item-list $ProjectNumber --owner $Owner --format json --limit 100
+    $itemsJson = gh project item-list $ProjectNumber --owner $ProjectOwner --format json --limit 100
 } catch {
     Write-Error "ERROR: GitHub CLI missing project scope or unauthenticated. Run: gh auth refresh -s project"
     exit 1
+}
+
+if (-not $TargetUser) {
+    try {
+        $TargetUser = (gh api user --jq .login 2>$null)
+    } catch {}
+    if (-not $TargetUser) {
+        $TargetUser = "Rashik977"
+    }
 }
 
 $data = $itemsJson | ConvertFrom-Json
@@ -26,7 +38,7 @@ foreach ($item in $data.items) {
     $assignees = $item.assignees
     $isAssigned = $false
     foreach ($a in $assignees) {
-        if ($a -match "rashik") { $isAssigned = $true; break }
+        if ($a.ToLower().Contains($TargetUser.ToLower())) { $isAssigned = $true; break }
     }
     if (-not $isAssigned) { continue }
 
@@ -64,7 +76,7 @@ $sorted = $candidates | Sort-Object -Property PScore, Number
 
 Write-Host ""
 Write-Host "========================================================================================================="
-Write-Host "                                 AVAILABLE TICKETS (ASSIGNED TO RASHIK)                                  "
+Write-Host "                     AVAILABLE TICKETS (ASSIGNED TO: $($TargetUser.ToUpper()))                          "
 Write-Host "========================================================================================================="
 Write-Host ("{0,-9}{1,-12}{2,-5}{3,-12}{4,-52}{5}" -f "Issue #", "Priority", "SP", "Status", "Title", "URL")
 Write-Host ("-" * 115)
@@ -75,5 +87,5 @@ foreach ($c in $sorted) {
 }
 
 Write-Host ("-" * 115)
-Write-Host "Blocked/Blocking tickets assigned to Rashik: $blockedCount"
+Write-Host "Blocked/Blocking tickets assigned to $TargetUser`: $blockedCount"
 Write-Host ""
