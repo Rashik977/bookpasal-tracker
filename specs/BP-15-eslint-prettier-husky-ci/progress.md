@@ -1,6 +1,6 @@
 # Progress: BP-15 BE & FE ESLint + Prettier + Husky with Test Setup and CI in GitHub
 
-status: built, awaiting bp-finish
+status: completed
 
 ## Baseline Verification
 - **bookpasal_backend**:
@@ -36,7 +36,9 @@ status: built, awaiting bp-finish
   - `npm run format:check`: All files clean.
   - `npm test`: 5 passed (2 test files).
   - Pre-commit hook verified during git commit.
-- Commit: `7b2a3fd` ("BP-15 slice 1: configure ESLint, Prettier, Husky, and CI in backend").
+- Commits:
+  - `7b2a3fd`: "BP-15 slice 1: configure ESLint, Prettier, Husky, and CI in backend"
+  - `090c98c`: "BP-15 review: ensure husky hooks have executable file permissions"
 
 ## Slice 2 Progress (Completed)
 - Target Repo: `bookpasal_frontend` on branch `bp-15-eslint-prettier-husky-ci`.
@@ -77,7 +79,24 @@ status: built, awaiting bp-finish
   - `npm run build`: Exit code 0.
   - Mobile viewport screenshot saved to `evidence/fe-pipeline-mobile-check.png`.
   - Pre-commit hook verified during git commit.
-- Commit: `7f4da38` ("BP-15 slice 3: configure Prettier, Husky git hooks, and GitHub Actions CI in frontend").
+- Commits:
+  - `7f4da38`: "BP-15 slice 3: configure Prettier, Husky git hooks, and GitHub Actions CI in frontend"
+  - `5d61bad`: "BP-15 review: strengthen question payload types, robust lint assertion, and executable hook permissions"
+
+## Review & Remediation (Completed)
+- Parallel sub-agents ran Standards and Spec code reviews.
+- Addressed findings:
+  1. Updated `.husky/pre-commit` and `.husky/pre-push` file modes to `100755` across both repos.
+  2. Discriminated `itemType` as `"book" | "collection"` in question payload types.
+  3. Created `AuthUser` type and refactored `QuestionSection.tsx`.
+  4. Updated `tests/lint.test.ts` regex assertion to prevent false positives.
+  5. Updated frontend `package.json` lint script to `eslint .`.
+  6. Captured multi-page mobile screenshots (`fe-mobile-home.png`, `fe-mobile-book.png`, `fe-mobile-collection.png`, `fe-mobile-orders.png`).
+
+## Pull Requests Created
+- **Backend PR**: [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18) (Target: `dev`)
+- **Frontend PR**: [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17) (Target: `develop`)
+- Linked Issue: `Refs Rashik977/bookpasal-tracker#15`
 
 ## Overall Verification Summary
 - **Backend (`bookpasal_backend`)**:
@@ -91,5 +110,9 @@ status: built, awaiting bp-finish
   - `npm test`: PASS (4 tests across 3 test files)
   - `npm run build`: PASS (Exit code 0)
 - **Evidence**:
-  - `evidence/fe-mobile-smoke.png` (Mobile viewport 375x667 verification)
-  - `evidence/fe-pipeline-mobile-check.png` (Mobile viewport 375x667 verification)
+  - `evidence/fe-mobile-home.png`
+  - `evidence/fe-mobile-book.png`
+  - `evidence/fe-mobile-collection.png`
+  - `evidence/fe-mobile-orders.png`
+  - `evidence/fe-mobile-smoke.png`
+  - `evidence/fe-pipeline-mobile-check.png`
