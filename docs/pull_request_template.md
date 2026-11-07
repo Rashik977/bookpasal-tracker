@@ -1,75 +1,28 @@
-<!-- 
-  BookPasal Pull Request Template
-  Used by bp-finish and developers for all Frontend and Backend PRs.
--->
+## Summary
+[1-2 sentence description of what this PR introduces and the problem it solves.]
 
-## 📌 Summary
-<!-- High-level description of what this PR introduces and the problem it solves -->
-[Brief description of the changes]
+## Slices & Changes
+- **Slice 01 - [Name]**: [Brief summary of behavior and layers touched across BE/FE]
+- **Slice 02 - [Name]**: [Brief summary of behavior and layers touched across BE/FE]
 
-**Tracker Reference:** Refs Rashik977/bookpasal-tracker#[ISSUE_NUMBER]
-
----
-
-## 📱 Mobile-First PWA Evidence & Screenshots
-<!-- 
-  CRITICAL: BookPasal is strictly a mobile-first PWA. 
-  All screenshots must be taken in mobile viewport dimensions (375x667, 390x844).
-  Screenshots from evidence/ are automatically attached.
--->
-| Screen / Feature | Viewport | Mobile Screenshot |
+## Mobile Screenshots
+<!-- Required for UI changes. BookPasal is strictly mobile-first; capture in mobile viewport (375x667 or 390x844). Remove section if backend-only. -->
+| Screen / Feature | Viewport | Screenshot |
 | :--- | :--- | :--- |
-| [Feature Name] | Mobile (390x844) | ![Mobile View](path/to/evidence/slice-01.png) |
+| [Feature Name] | Mobile (390x844) | ![Mobile View](evidence/slice-01.png) |
 
----
+## Verification
+- Tests: `npm test` -> PASS ([count] passed)
+- Typecheck: `npx tsc --noEmit` -> PASS
+- Build: `npm run build` -> PASS
+*(Baseline note: any pre-existing legacy lint warnings left untouched per policy).*
 
-## 🧱 Vertical Slices & Changes Made
-<!-- Breakdown of the thin vertical paths implemented -->
-- **Slice 01: [Slice Name]**
-  - *Backend*: [Models/Migrations/Routes/Services touched]
-  - *Frontend*: [Components/Pages/Services touched]
-  - *Behavior*: [Demonstrable user or system behavior]
-- **Slice 02: [Slice Name]**
-  - ...
+## How to Test
+1. [Step 1: Setup or navigation link, e.g. http://localhost:3000/...]
+2. [Step 2: Action to perform in mobile view]
+3. [Expected Result: What the reviewer should see or verify]
 
----
+## Decisions & Trade-offs
+- [Brief note on any architectural choice made from decisions.md, or "None"]
 
-## 🧪 Automated Verification & Evidence
-<!-- Hard evidence of tests, typechecks, and builds executed -->
-
-### Test Suite Execution
-```bash
-# Exact test command executed (e.g. npm test)
-[Paste command output showing passing tests]
-```
-
-### Typecheck & Build
-```bash
-# Frontend: npx tsc --noEmit && npm run build
-# Backend: node checks
-[Paste build confirmation output]
-```
-
----
-
-## 🔍 How to Test Manually (Reviewer Checklist)
-<!-- Step-by-step reproduction steps for Rashik / Prashant to test on a mobile device/browser -->
-1. **Setup**: [e.g. Ensure local Postgres test DB / docker is running]
-2. **Step 1**: Open app in mobile view (or on phone): `http://localhost:3000/[route]`
-3. **Step 2**: [Perform action, e.g. click button, submit form]
-4. **Expected Result**: [What should be seen or asserted]
-
----
-
-## ⚖️ Architectural Decisions & Trade-offs
-<!-- Decisions made autonomously by the agent or agreed upon during bp-start -->
-- **Decision 1**: [Rationale and alternatives considered from decisions.md]
-
----
-
-## ✅ Quality Checklist
-- [x] **Strict TDD**: Failing test written first via public interface, then minimal implementation.
-- [x] **Zero-Mock DB**: Backend tested against real local `bookpasal_test` PostgreSQL.
-- [x] **Mobile Viewport**: Verified in mobile dimensions, touch targets checked.
-- [x] **Clean Commits**: One commit per slice (`BP-<n> slice <k>: <behaviour>`).
-- [x] **Collaborator Respect**: Targeted against `dev` (BE) or `develop` (FE); draft/ready for manual merge only.
+Refs Rashik977/bookpasal-tracker#[ISSUE_NUMBER]
