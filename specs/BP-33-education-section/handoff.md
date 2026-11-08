@@ -70,9 +70,17 @@ A cohesive, integrated Academic section natively built into BookPasal:
   - Format: `npm run format:check` -> **PASS (Prettier verified)**
   - Lint: `npm run lint` -> **PASS (0 errors; baseline pre-existing warnings preserved)**
 - **Mobile Viewport Evidence (480px × 1050px)**:
-  - `evidence/education_hub_mobile.png`: Brand header, orange single pill strip with right fade directly under search, bundles carousel, clean book cards, PWA install banner, all 5 bottom nav items intact.
-  - `evidence/sell_selection_mobile.png`: Choice cards (Literature & General vs Academic & Textbooks), no camera auto-popup, all 5 bottom nav items intact.
-  - `evidence/sell_academic_mobile.png`: Multi-book accordion, MUI autocomplete for Class and Subject, BS edition year (`2081`), inline validation, and academic collection bundling section.
+  | Screen / Feature | Viewport | Screenshot |
+  | :--- | :--- | :--- |
+  | **Education Hub** (Brand Header, Level Pills Under Search with Fade, Bundles, Textbooks, PWA Banner) | Mobile (480x1050) | ![Education Hub](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/education_hub_mobile.png) |
+  | **Academic Filter Modal** (Curriculum Level, Dynamic Class & Subject, Material Type, Price Range) | Mobile (480x1050) | ![Academic Filter Modal](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/education_filter_mobile.png) |
+  | **Curriculum Class View & Breadcrumbs** (`Home > Education > Class 10 (SEE)`, Hero Card, Real Book Grid) | Mobile (480x1050) | ![Class Breadcrumbs](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/education_class_breadcrumbs_mobile.png) |
+  | **Curriculum Subject View & Breadcrumbs** (`Home > Education > Class 10 (SEE) > Compulsory Mathematics`) | Mobile (480x1050) | ![Subject Breadcrumbs](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/education_subject_breadcrumbs_mobile.png) |
+  | **Academic Book Detail** (Breadcrumbs, Cover Carousel, Condition, Academic Details Card) | Mobile (480x1050) | ![Academic Book Detail](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/education_book_detail_mobile.png) |
+  | **Academic Collection / Bundle Detail** (Course Bundle Details, Bundle Price, Included Books) | Mobile (480x1050) | ![Academic Collection Detail](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/education_collection_detail_mobile.png) |
+  | **Sell Landing Hub** (Choice Cards: Literature vs Academic, No Camera Auto-Popup) | Mobile (480x1050) | ![Sell Choice UI](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/sell_selection_mobile.png) |
+  | **Academic Sell Wizard** (MUI Autocomplete Class & Subject, BS Year, Multi-Book & Collection Bundling) | Mobile (480x1050) | ![Academic Sell Wizard](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/sell_academic_mobile.png) |
+  | **General Sell Flow** (Multi-Book Accordion, Optional General Collection Bundling) | Mobile (480x1050) | ![General Sell Flow](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-33-education-section/evidence/sell_general_mobile.png) |
 
 ---
 
