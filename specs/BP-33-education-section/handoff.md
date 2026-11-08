@@ -1,24 +1,47 @@
 # BP-33: Education Section - Handoff Summary
 
 - **Ticket**: [Issue #33: Education section](https://github.com/Rashik977/bookpasal-tracker/issues/33)
-- **Status**: Ready for Review & Manual Verification (PRs Open)
+- **Status**: Ready for Final Review & Manual Testing (PRs Open & Updated)
 - **Backend PR**: [prashantmgk/bookpasal_backend#19](https://github.com/prashantmgk/bookpasal_backend/pull/19) (`dev` ← `bp-33-education-section`)
 - **Frontend PR**: [prashantmgk/bookpasal_frontend#18](https://github.com/prashantmgk/bookpasal_frontend/pull/18) (`develop` ← `bp-33-education-section`)
 
 ---
 
-## 1. What Was Built
-A dedicated, clutter-free Academic & Education marketplace inside BookPasal for Nepali students and sellers:
-1. **Curriculum Taxonomy & Data Partitioning**: Complete 3-tier hierarchy (`school` Grades 1-10 / SEE, `plus_two` Grades 11-12 Science/Management/Humanities/Law, `bachelors` TU/IOE/CSIT/BBA) with strict search partitioning (`is_academic: false` on general search; `is_academic: true` on education browse).
-2. **Animated Mode Switcher & Theme Shift**: Minimalist toggle in `HomeTopBar` transitioning smoothly between warm literary tones (`General`) and scholastic navy/emerald tones (`Academic`).
-3. **Dedicated Listing Wizard (`/sell/academic`)**: 3-step listing flow with cascading Level -> Class -> Subject selectors, "Other / Custom" manual subject fallback, syllabus version (`current_syllabus` vs `old_course`), and markings status (`clean`, `pencil`, `pen_notes`).
-4. **Education Browse Hub (`/education`)**: Level tabs, horizontal scroll Class and Subject filter chips, and responsive `BookCard` grid with single subtle curriculum badges.
-5. **SEO Dynamic Routes (`/education/[classSlug]/[[...subjectSlug]]`)**: Dynamic class and subject metadata, deep linking, and automated breadcrumbs.
-6. **Academic Book Details (`/book/[id]`)**: `AcademicDetailsCard` displaying verified academic metadata, an alert warning pill for discontinued courses, and curriculum-aware related textbook recommendations.
+## 1. What Was Built & Overhauled
+A cohesive, integrated Academic section natively built into BookPasal:
+
+1. **BookPasal Brand & Layout Continuity**:
+   - Uses the standard BookPasal `HomeTopBar` (brand logo, search input, notifications bell, cart, and profile menu).
+   - Brand orange (`#f97316`) throughout: active toggle state, single pill filter strip, and action buttons. Zero arbitrary green tones.
+   - Ambient warm scholastic canvas (`bg-[#fcf9f2]`) with fluid micro-transitions on toggle.
+   - PWA Install Banner and Push Notification Banner preserved on `/education`.
+
+2. **Education Browse Hub (`/education`)**:
+   - Single clean pill strip: `[ All Levels ]  [ School ]  [ +2 High School ]  [ University / Bachelors ]` with no emojis.
+   - Dedicated **Academic Collections & Bundles** carousel alongside Academic Textbooks in the feed.
+   - Standard pagination with total pages (removed confusing `"Showing X books of Y"` counter).
+   - Search-adjacent `FilterModal` updated to display academic-specific filters (Material Type, Syllabus Version, Markings Status) when in academic mode.
+   - Instantaneous wishlist toggle via TanStack Query cache invalidation on `["education"]`.
+   - `BookCard`: defaulted `originalPrice = ""` eliminating unwanted discount badges (`-20%`, `-29%`) and struck-through prices; academic badge neutralized.
+
+3. **Streamlined Sell Flow (`/sell` & `/sell/academic`)**:
+   - Removed automatic ISBN camera scanner popup on mount (`scannerOpenForKey: null`).
+   - Clean choice card UI: `[ 📖 Literature & General ]` vs `[ 🎓 Academic & Textbooks ]`.
+   - Dedicated `/sell/academic` form with:
+     - Searchable single-select autocomplete for Class/Stream with custom class option.
+     - Comprehensive Nepal syllabi seeds: all Grades 1–10 (CDC), +2 NEB streams, and top 19 Bachelor/Master degrees (BSc CSIT, BCA, BIT, BBA, BBS, BBM, BHM, BE Civil, BE Computer, BE Electrical, MBBS, BDS, B.Pharm, BSc Nursing, BA, B.Ed, BSc General, MBS, MBA) with official subjects.
+     - Strict `react-hook-form` validation with inline error messages placed directly under each field.
+     - Mandatory subject selection / custom subject entry.
+     - Pure Nepali B.S. edition year input (`2081`), no English slash.
+     - Removed "Price Negotiable" checkbox.
+
+4. **SEO & Academic Details**:
+   - Dynamic SEO curriculum routes (`/education/[classSlug]/[[...subjectSlug]]`).
+   - Clean academic detail card on `/book/[id]` with curriculum-aware related textbook recommendations.
 
 ---
 
-## 2. Per-Slice Breakdown & Review Outcomes
+## 2. Per-Slice Breakdown & Commits
 
 | Slice / Step | Highlights | BE Commits | FE Commits |
 |---|---|---|---|
@@ -27,66 +50,62 @@ A dedicated, clutter-free Academic & Education marketplace inside BookPasal for 
 | **Slice 03** | `GET /api/education/books` filtering API, `/education` browse hub with Level/Class/Subject chips | `87709bd` | `370cff0` |
 | **Slice 04** | Slug resolution API, `/education/[classSlug]/[subjectSlug]` SEO pages | `74e72c9` | `4a899ad` |
 | **Slice 05** | Academic taxonomy joins on `/book/[id]`, `AcademicDetailsCard`, curriculum recommendations | `b8cf85b` | `4c92421` |
-| **Review Fixes** | Moved related query to `educationModal`, graceful slug fallback, custom subject input, `old_course` warning pill, `useAuthGuard` protection | `ac1d5f9` | `24cafca` |
+| **Review Fixes** | Related query in `educationModal`, graceful slug fallback, custom subject input, `old_course` warning pill, `useAuthGuard` | `ac1d5f9` | `24cafca` |
+| **Overhaul & Polish** | Academic collections feed, expanded CDC/NEB/TU seeds, BS edition year, class autocomplete, brand orange, no discount on cards | `a1195f3`, `3b0f143` | `46075b8`, `459e2a1`, `36725da`, `1873730` |
 
 ---
 
 ## 3. Automated Verification Summary
 
 - **Backend**:
-  - Tests: `npm test` -> **PASS (7 test files, 24 passed)**
+  - Tests: `npm test` -> **PASS (7 test files, 25 tests passed)**
   - Lint: `npm run lint` -> **PASS (0 errors, 0 warnings)**
   - Format: `npm run format:check` -> **PASS (Prettier verified)**
 - **Frontend**:
-  - Tests: `npm test` -> **PASS (8 test files, 17 passed)**
-  - Typecheck: `npx tsc --noEmit` -> **PASS (0 errors)**
-  - Build: `npm run build` -> **PASS (Next.js production build succeeded)**
+  - Tests: `npm test` -> **PASS (8 test files, 16 tests passed)**
+  - Build: `npm run build` -> **PASS (Production build with Turbopack/Webpack succeeded, all routes valid)**
+  - Format: `npm run format:check` -> **PASS (Prettier verified)**
   - Lint: `npm run lint` -> **PASS (0 errors; baseline pre-existing warnings preserved)**
 - **Mobile Viewport Evidence (480px × 1050px)**:
-  - `evidence/slice-01-mode-switch.png`: Mode switcher active in Home header with 5 bottom nav items intact.
-  - `evidence/slice-02-academic-sell.png`: Dedicated 3-step listing wizard with cascading selectors.
-  - `evidence/slice-03-education-hub.png`: Education browse hub with Level tabs and textbook grid.
-  - `evidence/slice-04-seo-route.png`: SEO dynamic route (`/education/class-10`) with breadcrumb navigation.
-  - `evidence/slice-05-academic-detail.png`: Academic detail card, tags, and curriculum-aware recommendations.
+  - `evidence/education_hub_mobile.png`: Brand header, orange single pill strip, bundles carousel, clean book cards, PWA install banner, all 5 bottom nav items intact.
+  - `evidence/sell_selection_mobile.png`: Choice cards (Literature vs Academic), no camera auto-popup, all 5 bottom nav items intact.
+  - `evidence/sell_academic_mobile.png`: Clean form with class autocomplete, mandatory subject, BS edition year (`2081`), inline validation.
 
 ---
 
-## 4. Manual Test Checklist for Rashik (Mobile Viewport: 480px)
+## 4. Manual Test Checklist for Rashik
 
-1. **Header Mode Switch**:
-   - Open `http://localhost:3000/` at 480px width.
-   - Tap `[ 🎓 Academic ]` in the top bar: verify smooth theme shift and navigation to `/education`.
-   - Tap `[ 📚 General ]`: verify instant return to the literature home view.
-2. **Curriculum Browsing**:
-   - On `/education`, tap the `+2 High School` tab: verify classes update to Class 11 and Class 12 streams.
-   - Tap `Class 10 (SEE)` -> `Science & Technology`: verify textbooks update with real seed data.
-   - Verify all 5 BottomNav items (`Home`, `Wishlist`, `Sell`, `Orders`, `Profile`) remain fully visible and clickable without horizontal clipping.
-3. **Dedicated Sell Flow**:
-   - Tap `Sell` on the bottom nav, then tap the green banner `Sell Academic ->`.
-   - Verify unauthenticated users are prompted with `AuthModal`.
-   - Once logged in, select `School` -> `Class 10 (SEE)` -> `Other / Custom Subject`: verify custom subject input appears.
-   - Fill in price, condition, upload a photo, and publish: verify redirect to `/education` with the new listing.
-4. **Academic Book Detail**:
-   - Click on any textbook (e.g. *Compulsory Mathematics Class 10*):
-   - Verify breadcrumb path: `Home > Education > Class 10 (SEE) > Compulsory Mathematics`.
-   - Verify `Curriculum & Academic Details` card displays Level, Class, Subject, Board, Syllabus, and Markings.
-   - If syllabus is `Old Course`, verify the warning pill `Old Course / Discontinued Syllabus` appears.
-   - Check the `Related Academic Textbooks` section: verify it only recommends books from the same curriculum.
-5. **Partitioning**:
-   - Return to General Home (`/`) and search for a keyword: verify textbooks do not appear in general fiction/novel search results.
-
----
-
-## 5. Architectural Decisions & Trade-offs
-- **Normalized Tables (Decision #4)**: Split into `academic_classes` and `academic_subjects` with foreign keys on `books` instead of free-text tags to ensure relational integrity, taxonomy caching, and SEO slug resolution.
-- **Strict Partitioning (Decision #5)**: Used `is_academic` boolean index on `books` to cleanly bifurcate academic discovery from general book browsing.
-- **Dedicated Flow (Decision #3)**: Provided `/sell/academic` rather than adding dozens of conditional fields to the general sell accordion.
-- **Graceful Slug Fallbacks**: Backend query builder gracefully ignores non-existent or deleted class/subject slugs instead of returning empty 404s.
+1. **Brand Continuity & Header**:
+   - Open `http://localhost:3000` at mobile viewport width (480px).
+   - Tap `[ 🎓 Academic ]` in the mode switcher -> transitions smoothly to `bg-[#fcf9f2]` and loads `/education`.
+   - Verify standard `HomeTopBar` with BookPasal logo, notifications bell, cart, and profile menu.
+   - Verify PWA install banner appears at the bottom.
+2. **Pill Strip & Bundles**:
+   - On `/education`, verify single pill row: `[ All Levels ]  [ School ]  [ +2 High School ]  [ University / Bachelors ]` with brand orange active state and no emojis.
+   - Verify `Academic Collections & Bundles` carousel appears with the SEE Complete Set bundle card.
+   - Verify textbook cards display clean NPR prices (`Rs. 280.00`) without discount percentage badges or struck-through prices.
+   - Tap a wishlist heart on any textbook -> verify it turns orange immediately.
+3. **Filter Modal**:
+   - Tap the filter icon next to the search input.
+   - Verify the filter modal opens with academic filters: Material Type, Syllabus Version, and Markings Status.
+4. **Sell Flow**:
+   - Navigate to `http://localhost:3000/sell`.
+   - Verify NO camera scanner automatically pops up.
+   - Verify two choice cards: `Literature & General Books` vs `Academic & Textbooks`.
+   - Tap `Academic & Textbooks` -> navigates to `/sell/academic`.
+   - Test Curriculum Level pills (`School`, `+2 High School`, `University / Bachelors`).
+   - Test `Class` autocomplete: type to search (e.g. `BSc CSIT` or `Class 10`) or type a custom class name.
+   - Verify `Subject` dropdown updates with relevant CDC/NEB/TU subjects.
+   - Try tapping `Continue` without subject -> verify inline error message appears directly under the field.
+   - Verify Edition Year field is formatted in B.S. (e.g. `2081`).
+   - Verify no "Price Negotiable" checkbox.
+5. **Academic Details Page**:
+   - From `/education`, tap any textbook (e.g. `Compulsory Mathematics Class 10`).
+   - Verify academic details card, clean badges (no green), and curriculum-related books at the bottom.
 
 ---
 
-## 6. Risks & Notes for Production
-- **Database Migrations**: When deploying to production, run `npx knex migrate:latest` followed by `npx knex seed:run` (specifically `02_seed_academic_curriculum.js`) to seed the CDC, NEB, and TU taxonomy.
-- **PR Merge Discipline**: PRs are drafted and waiting for your review. Never auto-merge; perform final review on GitHub:
-  - [Backend PR #19](https://github.com/prashantmgk/bookpasal_backend/pull/19)
-  - [Frontend PR #18](https://github.com/prashantmgk/bookpasal_frontend/pull/18)
+## 5. Risks & Notes for Prashant / Reviewer
+- All changes are strictly additive or isolated to the academic mode.
+- Existing general books and general feeds remain 100% untouched and partitioned away from academic listings.
+- Direct push to protected branches is blocked; PRs are ready for squash/merge by Rashik or Prashant.

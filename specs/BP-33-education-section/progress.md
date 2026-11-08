@@ -94,5 +94,34 @@
   - Backend: `npm test` -> 7 test files, 24 passed (0 failures). `npm run lint` & `npm run format:check` -> passed.
   - Frontend: `npm test` -> 8 test files, 17 passed (0 failures). `npx tsc --noEmit` -> passed (0 errors). `npm run build` -> passed.
 
+## Comprehensive Feedback Overhaul & Polish
+- **Feedback Addressed**:
+  - Maintained BookPasal identity: standard `HomeTopBar` (with logo, notifications, cart, profile), brand orange `#f97316`, PWA install banner, Push notification banner.
+  - Replaced dark green tones with ambient warm scholastic canvas (`bg-[#fcf9f2]`) and fluid micro-transitions.
+  - Replaced crowded pill rows with a single clean pill strip (`[ All Levels ]  [ School ]  [ +2 High School ]  [ University / Bachelors ]`) in brand orange with zero emojis.
+  - Added Academic Collections & Bundles carousel alongside Academic Textbooks in the feed with standard pagination.
+  - Connected search-adjacent `FilterModal` with academic filters (Material Type, Syllabus Version, Markings Status).
+  - Overhauled `/sell`: eliminated auto-camera scanner popup on mount; introduced clean two-card choice UI (`Literature & General` vs `Academic & Textbooks`).
+  - Added searchable single-select class autocomplete with custom class option. Added comprehensive Nepal syllabus seeds (all Grades 1–10, +2 streams, top 19 Bachelor/Master degrees, official CDC/NEB/TU subjects).
+  - Enforced strict `react-hook-form` validation with inline error messages under fields, mandatory subject selection, BS edition year (`2081`), and removed negotiable price checkbox.
+  - Fixed `BookCard`: defaulted `originalPrice = ""` eliminating unwanted discount badges and strikethrough prices; neutralized academic badges.
+  - Fixed wishlist reactive update: added `queryClient.invalidateQueries({ queryKey: ["education"] })` for instantaneous heart fill state.
+- **Overhaul Commits**:
+  - Backend:
+    - `a1195f3` ("BP-33 slice 5: academic collections integration and expanded curriculum taxonomy")
+    - `3b0f143` ("BP-33: update test expectation for BS edition year in academic book details test")
+  - Frontend:
+    - `46075b8` ("BP-33 slice 6: complete frontend education hub and sell flow overhaul")
+    - `459e2a1` ("BP-33: add is_locked to HomeCollectionItem type")
+    - `36725da` ("BP-33: add notes to AcademicType union in frontend")
+    - `1873730` ("BP-33: default originalPrice to empty string and re-style academicBadge in BookCard")
+- **Final Verification**:
+  - Backend: `npm test` -> 7 test files, 25 passed. `npm run lint` & `npm run format:check` -> 0 errors.
+  - Frontend: `npm test` -> 8 test files, 16 passed. `npm run build` -> production build succeeded. `npm run lint` & `npm run format:check` -> 0 errors.
+  - Mobile Browser Check: Verified at 480×1050 viewport with all 5 BottomNav items visible and real seed data.
+- **PRs**:
+  - Backend PR: https://github.com/prashantmgk/bookpasal_backend/pull/19
+  - Frontend PR: https://github.com/prashantmgk/bookpasal_frontend/pull/18
+
 ## Status
-status: reviewed and verified, ready for PRs
+status: overhaul complete, verified, PRs updated and ready for review
