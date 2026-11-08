@@ -29,7 +29,7 @@ Write `bookpasal-tracker/specs/BP-<n>-<slug>/slices/NN-<name>.md`. Rules:
 - NEVER create horizontal slices (all models, all endpoints, all UI).
 - A migration belongs to the first slice that needs it, not to a separate "database slice".
 - Order slices so each builds on a working previous one; each should be small enough to finish and verify in one sitting.
-Each slice file contains: Goal and behaviour; Why it is vertical (layers touched); EXACT files to create/modify in each repo (`bookpasal_backend`, `bookpasal_frontend`, found by exploring, not guessed); the FIRST failing test to write (file path, test name, what it asserts); further behaviours to TDD in order; commands to run the slice's tests and the full suite in each repo; Browser check (numbered steps to perform in a MOBILE VIEWPORT and what to see); Done criteria; Risks or open decisions.
+Each slice file contains: Goal and behaviour; Why it is vertical (layers touched); EXACT files to create/modify in each repo (`bookpasal_backend`, `bookpasal_frontend`, found by exploring, not guessed); the FIRST failing test to write (file path, test name, what it asserts); further behaviours to TDD in order; commands to run the slice's tests and the full suite in each repo; Browser check (numbered steps to perform in a MOBILE VIEWPORT [standard 480x1050 with real data] and what to see); Done criteria; Risks or open decisions.
 Write progress.md as an index: slice list with status (pending/in-progress/done/blocked), plus "status: awaiting approval".
 
 ## 6. Approve
