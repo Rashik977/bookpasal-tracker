@@ -7,10 +7,10 @@ Introduces the backend curriculum taxonomy, academic book partitioning, dedicate
 - **Slice 03 - Education Browse & Feed**: Implemented `GET /api/education/books` supporting level, class, subject, material type, syllabus version, and markings filters with pagination.
 - **Slice 04 - SEO & Slug Resolution**: Implemented `GET /api/education/resolve/:classSlug` and `GET /api/education/resolve/:classSlug/:subjectSlug` returning IDs, names, and metadata for dynamic curriculum routes.
 - **Slice 05 - Academic Details & Collections**: Extended `GET /api/books/:id` with taxonomy joins and curriculum-restricted related books (`/api/books/:id/related`). Extended `GET /api/education/books` to include academic bundles (`collections`) alongside books with pagination.
-- **Overhaul & Feedback Polish**: Seeded complete Grade 1–10 classes, +2 streams, and top 19 Bachelor/Master degrees with official CDC/NEB/TU subjects; added SEE complete set collection seed; pure BS edition year validation (`2081`).
+- **Overhaul & Feedback Polish**: Seeded complete Grade 1–10 classes, +2 streams, and top 19 Bachelor/Master degrees with official CDC/NEB/TU subjects; added SEE complete set collection seed; pure BS edition year validation (`2081`); fixed CI test isolation by adding seed execution to `tests/setup.js`; strictly prevented academic collections from appearing in general search/featured via `.whereNotExists`; added `seed:load:academic` generating 60 academic books and 6 collections.
 
 ## Verification
-- Tests: `npm test` -> PASS (7 test files, 25 tests passed)
+- Tests: `npm test` -> PASS (7 test files, 26 tests passed - 100% pass rate)
 - Lint: `npm run lint` -> PASS (0 errors, 0 warnings)
 - Format Check: `npm run format:check` -> PASS (0 errors)
 
