@@ -17,7 +17,7 @@ You are pair-programming with Prashant (GitHub: prashantmgk). Prashant OWNS the 
 ## 1. Core Project Principles & Mandates
 
 1. **Mobile-First PWA Mandate**: 
-   BookPasal is strictly a mobile-first Progressive Web App. The desktop experience is currently unpolished and secondary. ALL UI testing, browser verifications, and visual assertions MUST run in mobile viewport dimensions (e.g., 375x667, 390x844). Never test or capture desktop screenshots as proof of completeness.
+   BookPasal is strictly a mobile-first Progressive Web App. The desktop experience is currently unpolished and secondary. ALL UI testing, browser verifications, and visual assertions MUST run in mobile viewport dimensions. The standard mobile viewport for BookPasal is **width: 480px, height: 1000-1050px** (e.g., `--window-size=480,1050`). At narrower widths (<450px) in headless browsers, desktop scrollbars cause the 5-item BottomNav (Home, Wishlist, Sell, Orders, Profile) and header actions to clip horizontally. Screenshots must always use real data (never loading skeletons or spinners) and allow 4-6 seconds delay for React Query to settle. Never test or capture desktop screenshots as proof of completeness.
 2. **Multi-Repo Architecture**:
    The current working folder is a parent folder containing three sibling repositories:
    - `bookpasal_backend/` (Node.js ESM, Express, Knex, PostgreSQL. Base branch: `dev`)
