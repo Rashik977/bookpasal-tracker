@@ -18,7 +18,7 @@ BookPasal is a marketplace for buying and selling books in Nepal (used and new, 
 - Domain glossary and ADRs: bookpasal-tracker/docs/.
 
 ## Workflow (one ticket at a time)
-1. bp-start: pick top ticket, explore code, interview Rashik one question at a time, write spec.md and vertical slices, get approval. This is the only phase where questions are expected.
+1. bp-start: show top 5 tickets, wait for Rashik to select one, explore code, interview Rashik one question at a time, write spec.md and vertical slices, get approval. This is the only phase where questions are expected.
 2. bp-build: fully autonomous TDD, slice by slice. No questions except real blockers (see bp-build).
 3. bp-finish: fresh-context review, draft PRs, handoff summary. Rashik does the final review and manual testing.
 Bug fixes found in review follow the same discipline: write a failing test that reproduces it first, then fix.

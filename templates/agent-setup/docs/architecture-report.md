@@ -75,7 +75,7 @@ flowchart LR
     Build --> Finish["bp-finish (Review & PR)"]
 
     subgraph bp_start ["bp-start"]
-        PickTicket["Pick Top Assigned Ticket"] --> CodeInterview["Codebase Exploration & Interview"]
+        SelectTicket["Select from Top 5 Tickets"] --> CodeInterview["Codebase Exploration & Interview"]
         CodeInterview --> SpecSlices["Write spec.md & Vertical Slices"]
     end
 
