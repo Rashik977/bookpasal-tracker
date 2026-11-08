@@ -15,25 +15,27 @@ A cohesive, integrated Academic section natively built into BookPasal:
    - Brand orange (`#f97316`) throughout: active toggle state, single pill filter strip, and action buttons. Zero arbitrary green tones.
    - Ambient warm scholastic canvas (`bg-[#fcf9f2]`) with fluid micro-transitions on toggle.
    - PWA Install Banner and Push Notification Banner preserved on `/education`.
+   - Level pills placed inside sticky `HomeTopBar` directly under the search bar with exact same height, padding (`px-4 py-2`), and right-edge gradient fade (`from-background to-transparent w-16`) eliminating layout shifts or jumps.
 
 2. **Education Browse Hub (`/education`)**:
    - Single clean pill strip: `[ All Levels ]  [ School ]  [ +2 High School ]  [ University / Bachelors ]` with no emojis.
    - Dedicated **Academic Collections & Bundles** carousel alongside Academic Textbooks in the feed.
-   - Standard pagination with total pages (removed confusing `"Showing X books of Y"` counter).
-   - Search-adjacent `FilterModal` updated to display academic-specific filters (Material Type, Syllabus Version, Markings Status) when in academic mode.
+   - Standard pagination with total pages.
+   - Search-adjacent `FilterModal` overhauled for Academic: mirrors Categories with Curriculum Level pills, dynamically populated Class and Subject selectors from taxonomy, Material Type, and Price Range (removed Syllabus Version and Markings).
+   - Collections isolation: Backend prevents academic collections from leaking into general home or general search via `.whereNotExists` on academic books.
    - Instantaneous wishlist toggle via TanStack Query cache invalidation on `["education"]`.
    - `BookCard`: defaulted `originalPrice = ""` eliminating unwanted discount badges (`-20%`, `-29%`) and struck-through prices; academic badge neutralized.
 
-3. **Streamlined Sell Flow (`/sell` & `/sell/academic`)**:
-   - Removed automatic ISBN camera scanner popup on mount (`scannerOpenForKey: null`).
-   - Clean choice card UI: `[ 📖 Literature & General ]` vs `[ 🎓 Academic & Textbooks ]`.
+3. **Streamlined Sell Flow (`/sell`, `/sell/general`, & `/sell/academic`)**:
+   - Dedicated `/sell` 2-card selector: `[ 📖 Literature & General ]` vs `[ 🎓 Academic & Textbooks ]` with zero camera auto-pop on mount.
+   - General sell flow cleanly moved to `/sell/general`.
    - Dedicated `/sell/academic` form with:
-     - Searchable single-select autocomplete for Class/Stream with custom class option.
-     - Comprehensive Nepal syllabi seeds: all Grades 1–10 (CDC), +2 NEB streams, and top 19 Bachelor/Master degrees (BSc CSIT, BCA, BIT, BBA, BBS, BBM, BHM, BE Civil, BE Computer, BE Electrical, MBBS, BDS, B.Pharm, BSc Nursing, BA, B.Ed, BSc General, MBS, MBA) with official subjects.
+     - MUI-style single-select autocomplete for Class and Subject: text box with dropdown suggestions, instant click/enter selection, and inline custom typing support without extra secondary inputs.
+     - Multi-book listing via `AcademicBookAccordion` (`+ Add Another Academic Book`).
+     - Academic Collection bundling support: sellers can check "Group books into an academic collection", bundle 2+ academic books with a discount (10-50%), and publish atomically via `POST /api/listing`.
+     - Comprehensive Nepal syllabi seeds: all Grades 1–10 (CDC), +2 NEB streams, and top 19 Bachelor/Master degrees with official subjects.
      - Strict `react-hook-form` validation with inline error messages placed directly under each field.
-     - Mandatory subject selection / custom subject entry.
-     - Pure Nepali B.S. edition year input (`2081`), no English slash.
-     - Removed "Price Negotiable" checkbox.
+     - Nepali B.S. edition year input (`2081`).
 
 4. **SEO & Academic Details**:
    - Dynamic SEO curriculum routes (`/education/[classSlug]/[[...subjectSlug]]`).
@@ -51,25 +53,26 @@ A cohesive, integrated Academic section natively built into BookPasal:
 | **Slice 04** | Slug resolution API, `/education/[classSlug]/[subjectSlug]` SEO pages | `74e72c9` | `4a899ad` |
 | **Slice 05** | Academic taxonomy joins on `/book/[id]`, `AcademicDetailsCard`, curriculum recommendations | `b8cf85b` | `4c92421` |
 | **Review Fixes** | Related query in `educationModal`, graceful slug fallback, custom subject input, `old_course` warning pill, `useAuthGuard` | `ac1d5f9` | `24cafca` |
-| **Overhaul & Polish** | Academic collections feed, expanded CDC/NEB/TU seeds, BS edition year, class autocomplete, brand orange, no discount on cards | `a1195f3`, `3b0f143` | `46075b8`, `459e2a1`, `36725da`, `1873730` |
+| **Overhaul & Polish (Round 1 & 2)** | Academic collections feed, expanded CDC/NEB/TU seeds, BS edition year, MUI autocomplete, Level pills in top bar, FilterModal taxonomy filters, /sell hub, collection bundling, load seeds | `a1195f3`, `3b0f143`, `da936c7`, `414a529` | `46075b8`, `459e2a1`, `36725da`, `1873730`, `3fae532` |
 
 ---
 
 ## 3. Automated Verification Summary
 
 - **Backend**:
-  - Tests: `npm test` -> **PASS (7 test files, 25 tests passed)**
+  - Tests: `npm test` -> **PASS (7 test files, 26 tests passed - 100% pass rate)**
   - Lint: `npm run lint` -> **PASS (0 errors, 0 warnings)**
   - Format: `npm run format:check` -> **PASS (Prettier verified)**
+  - Load Seed: `npm run seed:load:academic` -> **PASS (60 academic books, 6 collections seeded)**
 - **Frontend**:
-  - Tests: `npm test` -> **PASS (8 test files, 16 tests passed)**
-  - Build: `npm run build` -> **PASS (Production build with Turbopack/Webpack succeeded, all routes valid)**
+  - Tests: `npm test` -> **PASS (8 test files, 16 tests passed - 100% pass rate)**
+  - Build: `npm run build` -> **PASS (Production build succeeded, all dynamic & static routes valid)**
   - Format: `npm run format:check` -> **PASS (Prettier verified)**
   - Lint: `npm run lint` -> **PASS (0 errors; baseline pre-existing warnings preserved)**
 - **Mobile Viewport Evidence (480px × 1050px)**:
-  - `evidence/education_hub_mobile.png`: Brand header, orange single pill strip, bundles carousel, clean book cards, PWA install banner, all 5 bottom nav items intact.
-  - `evidence/sell_selection_mobile.png`: Choice cards (Literature vs Academic), no camera auto-popup, all 5 bottom nav items intact.
-  - `evidence/sell_academic_mobile.png`: Clean form with class autocomplete, mandatory subject, BS edition year (`2081`), inline validation.
+  - `evidence/education_hub_mobile.png`: Brand header, orange single pill strip with right fade directly under search, bundles carousel, clean book cards, PWA install banner, all 5 bottom nav items intact.
+  - `evidence/sell_selection_mobile.png`: Choice cards (Literature & General vs Academic & Textbooks), no camera auto-popup, all 5 bottom nav items intact.
+  - `evidence/sell_academic_mobile.png`: Multi-book accordion, MUI autocomplete for Class and Subject, BS edition year (`2081`), inline validation, and academic collection bundling section.
 
 ---
 

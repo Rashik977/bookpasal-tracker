@@ -94,10 +94,29 @@
   - Backend: `npm test` -> 7 test files, 24 passed (0 failures). `npm run lint` & `npm run format:check` -> passed.
   - Frontend: `npm test` -> 8 test files, 17 passed (0 failures). `npx tsc --noEmit` -> passed (0 errors). `npm run build` -> passed.
 
-## Comprehensive Feedback Overhaul & Polish
+## Comprehensive Feedback Overhaul & Polish (Round 1 & Round 2)
 - **Feedback Addressed**:
   - Maintained BookPasal identity: standard `HomeTopBar` (with logo, notifications, cart, profile), brand orange `#f97316`, PWA install banner, Push notification banner.
   - Replaced dark green tones with ambient warm scholastic canvas (`bg-[#fcf9f2]`) and fluid micro-transitions.
+  - Fixed backend tests failing in CI by adding automatic seeding in `tests/setup.js` and individual test suite `beforeAll` hooks.
+  - Partitioned collections: added `.whereNotExists` on `is_academic = true` books in `getFeaturedCollections()` and `searchCollections()` to strictly prevent academic collections from leaking into the general home tab or general search results.
+  - Created `seed:load:academic` (`scripts/seed-load-academic.js`) seeding 60 academic books across School, +2, and University and 6 academic collections.
+  - Fixed Level Pills placement & jumping: Moved level pills inside `HomeTopBar` directly under search with identical height, padding (`px-4 py-2`), brand orange active state, and right-edge gradient fade (`from-background to-transparent w-16`).
+  - Overhauled `FilterModal` for Academic: Mirror categories with Curriculum Level pills, dynamically filtered Class/Stream and Subject selectors from taxonomy, Material Type, and Price Range; removed Syllabus Version and Markings Inside.
+  - MUI-style Autocomplete for Class and Subject: Created `MuiAutocomplete` allowing typing and dropdown suggestions with instant selection or custom entry directly in the same text box without needing secondary inputs.
+  - Two-Card Sell Selection Hub: Turned `/sell` into a dedicated 2-card landing screen (`Literature & General` -> `/sell/general` vs `Academic & Textbooks` -> `/sell/academic`), completely removing camera scanner auto-pop on mount.
+  - Academic Collection Bundling: Implemented `AcademicBookAccordion` with multi-book accordion support and integrated `CollectionSection` on `/sell/academic`, allowing sellers to bundle 2+ academic books into an academic course bundle with discount and publishing atomically via `POST /api/listing`.
+- **Commits**:
+  - Backend:
+    - `da936c7` ("BP-33: Fix test setup seeds and prevent academic collections from leaking into general feed")
+    - `414a529` ("BP-33: Add seed-load-academic script for 60+ books and multiple academic collections")
+  - Frontend:
+    - `3fae532` ("BP-33: Complete rework of Education header, filters, MUI Autocomplete, and Sell hub with collection support")
+- **Final Verification**:
+  - Backend: `npm test` -> 7 test files, 26 tests passed (100% pass rate). `npm run lint` & `npm run format:check` -> passed (0 errors).
+  - Frontend: `npm test` -> 8 test files, 16 tests passed (100% pass rate). `npm run build` -> passed (Next.js production build succeeded). `npm run format:check` & `npm run lint` -> passed (0 errors).
+  - Mobile Browser Verification: Captured at 480×1050 viewport with all 5 BottomNav items visible and verified real seed data for `education_hub_mobile.png`, `sell_selection_mobile.png`, and `sell_academic_mobile.png`.
+
   - Replaced crowded pill rows with a single clean pill strip (`[ All Levels ]  [ School ]  [ +2 High School ]  [ University / Bachelors ]`) in brand orange with zero emojis.
   - Added Academic Collections & Bundles carousel alongside Academic Textbooks in the feed with standard pagination.
   - Connected search-adjacent `FilterModal` with academic filters (Material Type, Syllabus Version, Markings Status).
