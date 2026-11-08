@@ -1,16 +1,48 @@
 # Handoff: BP-15 BE & FE ESLint + Prettier + Husky with Test Setup and CI in GitHub
 
 ## Summary
-Ticket BP-15 has been fully implemented, reviewed, verified, and submitted via Pull Requests. It establishes unified code quality standards, automated git hook enforcement, and GitHub Actions CI pipelines across both `bookpasal_backend` and `bookpasal_frontend`. Additionally, all 48 legacy ESLint errors in the frontend were completely eliminated with strict TypeScript typing without introducing any behavioral regressions.
+Ticket BP-15 has been fully implemented, verified, reviewed, and submitted via Pull Requests. It establishes unified code quality standards, automated git hook enforcement, and GitHub Actions CI pipelines across both `bookpasal_backend` and `bookpasal_frontend`. Additionally, all 48 legacy ESLint errors in the frontend were completely eliminated with strict TypeScript typing without introducing any behavioral regressions.
 
 ---
 
-## Pull Requests
-- **Backend PR**: [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18) (Target: `dev`)
-- **Frontend PR**: [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17) (Target: `develop`)
-- **Issue Tracker Ref**: `Refs Rashik977/bookpasal-tracker#15`
+## Pull Requests (Full Slices Ready for Review)
 
-*Note: PRs are left open for Rashik / Prashant to review and merge per project safety rules.*
+| Repository | Target Base | Pull Request | Commits | Changes |
+| :--- | :--- | :--- | :--- | :--- |
+| **Backend** | `dev` | [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18) | 3 commits | 67 files (+2,247 / -508) |
+| **Frontend** | `develop` | [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17) | 4 commits | 123 files (+2,909 / -1,858) |
+
+*Linked Issue:* `Refs Rashik977/bookpasal-tracker#15`  
+*(Per safety rules, PRs are left open for Rashik / Prashant to perform final review and merge).*
+
+---
+
+## Permanent Guard Against Direct Pushes
+To guarantee that neither the agent nor any command can ever push directly to protected base branches (`main`, `dev`, `develop`), a hard validation check has been embedded into `.husky/pre-push` in **both repositories**:
+```sh
+#!/bin/sh
+
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+case "$current_branch" in
+  main|dev|develop)
+    echo "❌ Direct push from '$current_branch' is forbidden! Work must be pushed to a feature branch and merged via Pull Request." >&2
+    exit 1
+    ;;
+esac
+
+while read -r local_ref local_sha remote_ref remote_sha
+do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/dev|refs/heads/develop)
+      echo "❌ Direct push to '$remote_ref' is forbidden! Work must be pushed to a feature branch and merged via Pull Request." >&2
+      exit 1
+      ;;
+  esac
+done
+
+npm test
+```
+Any attempt to push directly to `dev`, `develop`, or `main` fails immediately with exit code 1 at the Git hook level before touching GitHub.
 
 ---
 
@@ -19,14 +51,14 @@ Ticket BP-15 has been fully implemented, reviewed, verified, and submitted via P
 ### Slice 01 - Backend Quality Pipeline (`bookpasal_backend`)
 - **ESLint 9 Flat Config (`eslint.config.js`)**: Modern flat configuration for Node.js CommonJS environment, integrating `@eslint/js` and Prettier rules.
 - **Prettier (`.prettierrc`, `.prettierignore`)**: Standardized formatting with `"tabWidth": 2`, `"semi": true`, `"singleQuote": false`.
-- **Husky & lint-staged (`.husky/pre-commit`, `.husky/pre-push`)**: Automated staging checks (`prettier --write`, `eslint --fix`) on commit and test verification (`npm test`) on push. Configured with executable permissions (`100755`).
+- **Husky & lint-staged (`.husky/pre-commit`, `.husky/pre-push`)**: Automated staging checks (`prettier --write`, `eslint --fix`) on commit, branch push protection, and test verification (`npm test`) on push. Configured with executable permissions (`100755`).
 - **GitHub Actions CI (`.github/workflows/ci.yml`)**: Spawns PostgreSQL 15 service container, sets up test database, and runs format check, lint, and vitest test suite on push and PRs targeting `dev`.
 - **Automated Tests (`tests/pipeline.test.js`)**: Programmatic validation of `npm run lint` and `npm run format:check`.
 
 ### Slice 02 - Frontend Legacy ESLint Remediation (`bookpasal_frontend`)
 - **48 Legacy Errors Remediated**:
   - Excluded build output and icon assets in `eslint.config.mjs`.
-  - Added strict TypeScript types in `types/index.ts` (`CollectionBook`, `CollectionDetail`, `SellerListingItem`, `RelatedItem`, `Question`, `AuthUser`, `"book" | "collection"` action payloads).
+  - Added strict TypeScript types in `types/index.ts` (`CollectionBook`, `CollectionDetail`, `SellerListingItem`, `RelatedItem`, `Question`, `AuthUser`, `"book" | "collection"` payload actions).
   - Replaced unescaped apostrophes and double quotes with HTML entity escapes (`&apos;`, `&quot;`).
   - Refactored synchronous `setState` inside `useEffect` across 5 components (`orders/page.tsx`, `BottomNav.tsx`, `ProfileAvatar.tsx`, `PushNotificationProvider.tsx`, `PWAInstallBanner.tsx`).
   - Replaced untyped `any` annotations across 9 files with type-safe models.
@@ -34,19 +66,9 @@ Ticket BP-15 has been fully implemented, reviewed, verified, and submitted via P
 
 ### Slice 03 - Frontend Quality Pipeline (`bookpasal_frontend`)
 - **Prettier (`.prettierrc`, `.prettierignore`)**: Formatted entire codebase to uniform standards.
-- **Husky & lint-staged (`.husky/pre-commit`, `.husky/pre-push`)**: Configured pre-commit formatting and linting, and pre-push test execution with executable file modes (`100755`).
+- **Husky & lint-staged (`.husky/pre-commit`, `.husky/pre-push`)**: Configured pre-commit formatting/linting, branch push protection, and pre-push test execution with executable file modes (`100755`).
 - **GitHub Actions CI (`.github/workflows/ci.yml`)**: Validates format:check, lint, tsc typecheck, vitest tests, and production Next.js build on push and PRs targeting `develop`.
 - **Automated Tests (`tests/pipeline.test.ts`)**: Validates `npm run format:check` programmatically.
-
----
-
-## Code Review Findings & Fixes
-Prior to opening PRs, a fresh-context review (Standards and Spec) was executed via parallel subagents. The following improvements were addressed and committed:
-1. **Husky Hook Executable Permissions**: `git update-index --chmod=+x` applied to `.husky/pre-commit` and `.husky/pre-push` in both backend and frontend repositories so git hooks execute out-of-the-box on Linux/macOS environments.
-2. **Strict Question Item Discrimination**: Strengthened `itemType` typing from generic `string` to `"book" | "collection"` union across all question mutation payload types in `types/index.ts`.
-3. **Session User Typing**: Created reusable `AuthUser` type and eliminated inline object casts in `QuestionSection.tsx`.
-4. **Robust Test Assertion**: Updated `tests/lint.test.ts` from fragile string match to regex assertion `expect(output).not.toMatch(/[1-9]\d* error/)`.
-5. **Lint CLI Target**: Updated frontend `package.json` `"lint": "eslint ."` to allow direct invocations from repo root.
 
 ---
 
@@ -75,29 +97,15 @@ Prior to opening PRs, a fresh-context review (Standards and Spec) was executed v
 
 ---
 
-## Manual Testing Checklist for Rashik
+## Manual Review & Merge Checklist for Rashik
 
-1. **Verify Backend Hooks & CI**:
-   ```powershell
-   git -C bookpasal_backend checkout bp-15-eslint-prettier-husky-ci
-   npm --prefix bookpasal_backend run format:check
-   npm --prefix bookpasal_backend run lint
-   npm --prefix bookpasal_backend test
-   ```
-2. **Verify Frontend Hooks & Build**:
-   ```powershell
-   git -C bookpasal_frontend checkout bp-15-eslint-prettier-husky-ci
-   npm --prefix bookpasal_frontend run format:check
-   npm --prefix bookpasal_frontend run lint
-   npm --prefix bookpasal_frontend test
-   npm --prefix bookpasal_frontend run build
-   ```
-3. **Verify Git Hooks in Action**:
-   - Make a whitespace or formatting edit in any `.ts` or `.js` file.
-   - Run `git add <file>` and `git commit -m "test commit"`.
-   - Observe that `lint-staged` automatically formats and fixes the file.
-4. **Inspect & Merge PRs**:
-   - Review [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18)
-   - Review [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17)
-   - Confirm GitHub Actions CI status checks pass on both PRs.
-   - Merge when satisfied!
+1. **Review Backend Pull Request**:
+   - Visit [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18)
+   - Inspect the **67 files changed (+2,247 / -508)** covering ESLint flat config, Prettier, Husky, CI workflow, and test pipeline.
+   - Confirm CI checks pass.
+2. **Review Frontend Pull Request**:
+   - Visit [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17)
+   - Inspect the **123 files changed (+2,909 / -1,858)** covering 48 legacy ESLint fixes, strict TypeScript models, Prettier formatting, Husky hooks, mobile screenshots, and Next.js build verification.
+   - Confirm CI checks pass.
+3. **Merge**:
+   - Merge both PRs directly on GitHub into `dev` and `develop`.
