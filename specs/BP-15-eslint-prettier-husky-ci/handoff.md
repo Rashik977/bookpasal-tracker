@@ -88,12 +88,12 @@ Any attempt to push directly to `dev`, `develop`, or `main` fails immediately wi
 | **FE Tests** | `npm test` | PASS | 3 test files, 4 tests passed |
 | **FE Build** | `npm run build` | PASS | Next.js production build succeeded; all 15 routes compiled |
 
-### Mobile Screenshots (Full-Page with Real Data)
-Captured in mobile viewports (390px width) with backend active and real data loaded:
-- `evidence/fe-mobile-home.png` (Home screen: Best Offers, Top Collections, New Arrivals, BottomNav)
-- `evidence/fe-mobile-book.png` (Book detail page: The Great Gatsby, condition, tags, cart/buy buttons, Q&A)
-- `evidence/fe-mobile-collection.png` (Collection detail page: Classic Fiction Bundle, items, Q&A)
-- `evidence/fe-mobile-book-locked.png` (Book detail page: Atomic Habits with locked collection banner)
+### Mobile Screenshots (Full Mobile Viewport with Real Data)
+Captured in standard mobile viewport (480x1050) with backend active, real data loaded, and all 5 BottomNav items (Home, Wishlist, Sell, Orders, Profile) fully visible:
+- `evidence/fe-mobile-home.png` (Home screen: Header, Best Offers, Top Collections, New Arrivals, BottomNav)
+- `evidence/fe-mobile-book.png` (Book detail page: The Great Gatsby, condition, tags, cart/buy buttons, Q&A, BottomNav)
+- `evidence/fe-mobile-collection.png` (Collection detail page: Classic Fiction Bundle, items, Q&A, BottomNav)
+- `evidence/fe-mobile-book-locked.png` (Book detail page: Atomic Habits with locked collection banner, BottomNav)
 
 *All screenshots are also rendered live inside Frontend PR #17.*
 

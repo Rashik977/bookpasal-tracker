@@ -15,8 +15,10 @@ Autonomous phase. Rashik has already answered everything in bp-start. Do not ask
 1. Re-read spec.md, the slice file and progress.md (do not rely on memory). Mark the slice in-progress.
 2. TDD (use the tdd skill): for each behaviour in the slice: write ONE failing test via the public interface; run it; confirm it fails for the right reason; write the minimum code to pass; run it; refactor while green. Repeat for the next behaviour. Never write all tests first and never write production code without a failing test.
 3. Run the slice's tests until green.
-4. Browser verification (UI-affecting slices): use Antigravity's browser tool (`/browser`) to start the app locally and follow the slice's "Browser check" steps.
-   - MANDATORY: ALL browser verification MUST run in mobile viewport dimensions (e.g., 375x667, 390x844). Never test or capture desktop screenshots as proof of UI completeness.
+4. Browser verification (UI-affecting slices): use Antigravity's browser tool (`/browser`) or headless Chrome to start the app locally with real backend data and follow the slice's "Browser check" steps.
+   - MANDATORY: ALL browser verification MUST run in mobile viewport dimensions. The standard mobile screenshot dimensions for BookPasal are **width: 480px, height: 1000-1050px** (e.g. `--window-size=480,1050`). Never use narrow viewports (<450px) where the 5-item BottomNav (Home, Wishlist, Sell, Orders, Profile) or header action buttons are truncated horizontally.
+   - REAL DATA & DELAY MANDATE: Never capture loading skeletons, empty states, or spinners. Backend MUST be running with seed data and connected (`NEXT_PUBLIC_API_URL`). When taking automated screenshots, allow 4-6 seconds delay (e.g. `--virtual-time-budget=6000`) for network requests and React Query state to settle.
+   - VISIBILITY VERIFICATION: Always inspect captured screenshots using `read_file` to confirm that all 5 bottom nav items are visible and real data is rendered cleanly before proceeding.
    - Save screenshots to the ticket's evidence/ folder named `slice-NN-*`. If the browser tool is not available in the current environment, say so in progress.md, do not pretend, and fall back to API-level checks plus clear manual steps for Rashik.
 5. Run the full test suite, lint, typecheck and build in EVERY touched repo. All must pass (apart from recorded baseline failures).
 6. Commit in each touched repo with `git -C <repo>`: "BP-<n> slice <k>: <behaviour>". Never push in this phase.

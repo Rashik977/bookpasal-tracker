@@ -6,10 +6,10 @@
 - **Slice 02 - [Name]**: [Brief summary of behavior and layers touched across BE/FE]
 
 ## Mobile Screenshots
-<!-- Required for UI changes. BookPasal is strictly mobile-first; capture in mobile viewport (375x667 or 390x844). Remove section if backend-only. -->
+<!-- Required for UI changes. BookPasal is strictly mobile-first; capture in standard mobile viewport (480x1050) with real data and all 5 bottom nav items visible. Remove section if backend-only. -->
 | Screen / Feature | Viewport | Screenshot |
 | :--- | :--- | :--- |
-| [Feature Name] | Mobile (390x844) | ![Mobile View](evidence/slice-01.png) |
+| [Feature Name] | Mobile (480x1050) | ![Mobile View](evidence/slice-01.png) |
 
 ## Verification
 - Tests: `npm test` -> PASS ([count] passed)

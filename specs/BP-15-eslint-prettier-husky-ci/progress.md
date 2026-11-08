@@ -91,7 +91,7 @@ status: completed
   3. Created `AuthUser` type and refactored `QuestionSection.tsx`.
   4. Updated `tests/lint.test.ts` regex assertion to prevent false positives.
   5. Updated frontend `package.json` lint script to `eslint .`.
-  6. Captured full-page mobile screenshots with real backend data (`fe-mobile-home.png`, `fe-mobile-book.png`, `fe-mobile-collection.png`, `fe-mobile-book-locked.png`).
+  6. Captured mobile screenshots with standard mobile dimensions (480x1050) and real backend data with all 5 BottomNav items visible (`fe-mobile-home.png`, `fe-mobile-book.png`, `fe-mobile-collection.png`, `fe-mobile-book-locked.png`).
   7. Migrated Google fonts to local fonts in `app/layout.tsx` to fix CI build failure.
 
 ## Pull Requests Created & Verified
@@ -113,7 +113,7 @@ status: completed
   - `npm test`: PASS (4 tests across 3 test files)
   - `npm run build`: PASS (Exit code 0)
 - **Evidence**:
-  - `evidence/fe-mobile-home.png` (Full page mobile home with real books and collections)
-  - `evidence/fe-mobile-book.png` (Full page mobile book detail with real data)
-  - `evidence/fe-mobile-collection.png` (Full page mobile collection detail with items & Q&A)
-  - `evidence/fe-mobile-book-locked.png` (Full page mobile locked collection book)
+  - `evidence/fe-mobile-home.png` (Mobile 480x1050 home with all 5 nav items and real data)
+  - `evidence/fe-mobile-book.png` (Mobile 480x1050 book detail with all 5 nav items and real data)
+  - `evidence/fe-mobile-collection.png` (Mobile 480x1050 collection detail with all 5 nav items and real data)
+  - `evidence/fe-mobile-book-locked.png` (Mobile 480x1050 locked collection book with all 5 nav items)

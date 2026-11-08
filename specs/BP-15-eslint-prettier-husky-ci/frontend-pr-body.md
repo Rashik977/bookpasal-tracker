@@ -18,14 +18,14 @@ Remediates all 48 legacy ESLint errors, introduces Prettier code formatting, Hus
   - Fixed executable file permissions (`100755`) on husky hooks.
   - Migrated Google Fonts loader from `next/font/google` to `next/font/local` using self-hosted `.woff2` files in `public/fonts/` (`Outfit.woff2`, `DMSans.woff2`) to resolve upstream Next.js loader crash in CI runners.
 
-## Mobile Screenshots (Full-Page with Real Data)
-<!-- Captured with mobile viewport (390px width) with backend active and real data rendered -->
+## Mobile Screenshots (Full Mobile Viewport with Real Data)
+<!-- Captured with standard mobile viewport (480x1050) with backend active, real data rendered, and all 5 BottomNav items visible -->
 | Screen / Feature | Viewport | Screenshot |
 | :--- | :--- | :--- |
-| **Home Page** (Best Offers, Top Collections, New Arrivals) | Mobile (390x2200) | ![Home Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-home.png) |
-| **Book Detail** (The Great Gatsby, Tags, Cart/Buy, Q&A) | Mobile (390x1500) | ![Book Detail Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-book.png) |
-| **Collection Detail** (Classic Fiction Bundle, Price, Items, Q&A) | Mobile (390x1500) | ![Collection Detail Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-collection.png) |
-| **Book Detail - Locked** (Atomic Habits with Collection Lock Badge) | Mobile (390x1500) | ![Locked Book Detail Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-book-locked.png) |
+| **Home Page** (Header, Best Offers, Top Collections, New Arrivals, BottomNav) | Mobile (480x1050) | ![Home Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-home.png) |
+| **Book Detail** (The Great Gatsby, Tags, Cart/Buy, Q&A, BottomNav) | Mobile (480x1050) | ![Book Detail Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-book.png) |
+| **Collection Detail** (Classic Fiction Bundle, Price, Items, Q&A, BottomNav) | Mobile (480x1050) | ![Collection Detail Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-collection.png) |
+| **Book Detail - Locked** (Atomic Habits with Collection Lock Badge, BottomNav) | Mobile (480x1050) | ![Locked Book Detail Mobile](https://raw.githubusercontent.com/Rashik977/bookpasal-tracker/main/specs/BP-15-eslint-prettier-husky-ci/evidence/fe-mobile-book-locked.png) |
 
 ## Verification
 - GitHub Actions CI: **PASS** (Job `Lint, Format, Typecheck, Test & Build` in 1m 11s)

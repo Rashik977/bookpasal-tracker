@@ -5,7 +5,9 @@ BookPasal is a marketplace for buying and selling books in Nepal (used and new, 
 
 ## Mobile-First PWA Mandate
 - BookPasal is strictly a mobile-first Progressive Web App (PWA). The desktop experience is currently secondary / unpolished.
-- CRITICAL FOR TESTING: ALL browser tests and verification MUST run in mobile viewport dimensions (e.g., 375x667, 390x844 or standard mobile viewport). Never test or capture desktop screenshots as proof of UI completeness. Treat and test BookPasal as a mobile application.
+- CRITICAL FOR TESTING & SCREENSHOTS: ALL browser tests, verification, and PR evidence MUST run in mobile viewport dimensions. The standard mobile viewport for BookPasal is **width: 480px, height: 1000-1050px** (e.g. `--window-size=480,1050`). At narrower viewports (<450px) in headless browsers, desktop scrollbars cause the 5-item BottomNav (Home, Wishlist, Sell, Orders, Profile) and header actions to clip horizontally. Always use width 480px and verify all 5 bottom nav items are visible.
+- REAL DATA & DELAY MANDATE: Screenshots MUST display real data (never loading spinners, skeletons, or blank mock states). Run the backend with seed data, connect the frontend, and allow 4-6 seconds delay for React Query and images to settle before capturing.
+- Never test or capture desktop screenshots as proof of UI completeness. Treat and test BookPasal as a mobile application.
 
 ## Layout
 - This folder contains the FE repo (`bookpasal_frontend`), the BE repo (`bookpasal_backend`) and `bookpasal-tracker/` (Rashik's personal repo: specs, scripts, domain docs). This folder itself is not a git repo. Use `git -C <repo>` for every git command and keep commits, branches and PRs separate per repo.
@@ -44,6 +46,8 @@ Bug fixes found in review follow the same discipline: write a failing test that 
 - Branch per ticket in each touched repo: bp-<issue#>-<slug>, created from the up-to-date base branch (`dev` for backend, `develop` for frontend). One commit per slice: "BP-<n> slice <k>: <behaviour>".
 - PULL REQUEST MANDATE: The agent MUST create the Pull Requests (`gh pr create`) for both Frontend (`develop`) and Backend (`dev`) upon completing tickets or chores, strictly following `docs/pull_request_template.md` (summary, slices, mobile screenshots, test evidence, how to test, decisions). Never leave work only in local branches or ask Rashik to open PRs manually — Rashik hates creating PRs.
 - MERGE RULE: NEVER merge PRs automatically, and NEVER push directly to main/default/dev/develop. Only Rashik (or Prashant) performs the final review and merges PRs.
+- BARE PUSH PROHIBITION: Never run bare `git push`. Always specify remote and ticket branch explicitly: `git -C <repo> push -u origin bp-<issue#>-<slug>`. Direct push to `main`, `dev`, and `develop` is strictly blocked at the git hook level in `.husky/pre-push`.
+- PR INTEGRITY VERIFICATION: After creating PRs, verify with `gh pr view` that all commits and diff additions/deletions are present. If a PR has missing commits or zero changes, immediately investigate and report.
 - NEVER force push.
 - NEVER read or print real .env files or secrets. Local database only. Refuse anything that targets a non-local environment.
 - No destructive commands outside the repos. No global installs without telling Rashik.
