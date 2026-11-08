@@ -1,16 +1,16 @@
 # Handoff: BP-15 BE & FE ESLint + Prettier + Husky with Test Setup and CI in GitHub
 
 ## Summary
-Ticket BP-15 has been fully implemented, verified, reviewed, and submitted via Pull Requests. It establishes unified code quality standards, automated git hook enforcement, and GitHub Actions CI pipelines across both `bookpasal_backend` and `bookpasal_frontend`. Additionally, all 48 legacy ESLint errors in the frontend were completely eliminated with strict TypeScript typing without introducing any behavioral regressions.
+Ticket BP-15 has been fully implemented, verified, reviewed, and submitted via Pull Requests. It establishes unified code quality standards, automated git hook enforcement, deterministic offline font loading, and GitHub Actions CI pipelines across both `bookpasal_backend` and `bookpasal_frontend`. Additionally, all 48 legacy ESLint errors in the frontend were completely eliminated with strict TypeScript typing without introducing any behavioral regressions.
 
 ---
 
 ## Pull Requests (Full Slices Ready for Review)
 
-| Repository | Target Base | Pull Request | Commits | Changes |
-| :--- | :--- | :--- | :--- | :--- |
-| **Backend** | `dev` | [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18) | 3 commits | 67 files (+2,247 / -508) |
-| **Frontend** | `develop` | [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17) | 4 commits | 123 files (+2,909 / -1,858) |
+| Repository | Target Base | Pull Request | Commits | Changes | CI Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Backend** | `dev` | [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18) | 3 commits | 67 files (+2,247 / -508) | **PASS** (42s) |
+| **Frontend** | `develop` | [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17) | 4 commits | 123 files (+2,916 / -1,865) | **PASS** (1m 11s) |
 
 *Linked Issue:* `Refs Rashik977/bookpasal-tracker#15`  
 *(Per safety rules, PRs are left open for Rashik / Prashant to perform final review and merge).*
@@ -64,9 +64,10 @@ Any attempt to push directly to `dev`, `develop`, or `main` fails immediately wi
   - Replaced untyped `any` annotations across 9 files with type-safe models.
 - **Automated Tests (`tests/lint.test.ts`)**: Asserts that `npm run lint` completes with 0 errors across the entire repository.
 
-### Slice 03 - Frontend Quality Pipeline (`bookpasal_frontend`)
+### Slice 03 - Frontend Quality Pipeline & CI (`bookpasal_frontend`)
 - **Prettier (`.prettierrc`, `.prettierignore`)**: Formatted entire codebase to uniform standards.
 - **Husky & lint-staged (`.husky/pre-commit`, `.husky/pre-push`)**: Configured pre-commit formatting/linting, branch push protection, and pre-push test execution with executable file modes (`100755`).
+- **Self-Hosted Font Fix for CI**: Migrated from `next/font/google` to `next/font/local` using `.woff2` files stored in `public/fonts/` (`Outfit.woff2`, `DMSans.woff2`). This eliminates network dependency during Next.js build and resolves the upstream `TypeError: Cannot read properties of null (reading '1')` in GitHub Actions CI runners.
 - **GitHub Actions CI (`.github/workflows/ci.yml`)**: Validates format:check, lint, tsc typecheck, vitest tests, and production Next.js build on push and PRs targeting `develop`.
 - **Automated Tests (`tests/pipeline.test.ts`)**: Validates `npm run format:check` programmatically.
 
@@ -76,24 +77,25 @@ Any attempt to push directly to `dev`, `develop`, or `main` fails immediately wi
 
 | Layer | Command | Status | Result Summary |
 | :--- | :--- | :--- | :--- |
+| **BE CI** | GitHub Actions | PASS | Job completed in 42s |
 | **BE Format** | `npm run format:check` | PASS | All files formatted with Prettier |
 | **BE Lint** | `npm run lint` | PASS | 0 errors, 0 warnings |
 | **BE Tests** | `npm test` | PASS | 2 test files, 5 tests passed |
+| **FE CI** | GitHub Actions | PASS | Job completed in 1m 11s |
 | **FE Format** | `npm run format:check` | PASS | All files formatted with Prettier |
 | **FE Lint** | `npm run lint` | PASS | 0 errors, 41 legacy warnings preserved per baseline rule |
 | **FE Typecheck** | `npx tsc --noEmit` | PASS | Clean compilation, 0 errors |
 | **FE Tests** | `npm test` | PASS | 3 test files, 4 tests passed |
-| **FE Build** | `npm run build` | PASS | Next.js production build succeeded; all 15 routes generated |
+| **FE Build** | `npm run build` | PASS | Next.js production build succeeded; all 15 routes compiled |
 
-### Mobile Screenshots (Viewport: 375x667)
-- `evidence/fe-mobile-home.png` (Home screen verification)
-- `evidence/fe-mobile-book.png` (Book detail page verification)
-- `evidence/fe-mobile-collection.png` (Collection detail page verification)
-- `evidence/fe-mobile-orders.png` (Orders list page verification)
-- `evidence/fe-mobile-smoke.png` (Smoke verification)
-- `evidence/fe-pipeline-mobile-check.png` (Pipeline mobile verification)
+### Mobile Screenshots (Full-Page with Real Data)
+Captured in mobile viewports (390px width) with backend active and real data loaded:
+- `evidence/fe-mobile-home.png` (Home screen: Best Offers, Top Collections, New Arrivals, BottomNav)
+- `evidence/fe-mobile-book.png` (Book detail page: The Great Gatsby, condition, tags, cart/buy buttons, Q&A)
+- `evidence/fe-mobile-collection.png` (Collection detail page: Classic Fiction Bundle, items, Q&A)
+- `evidence/fe-mobile-book-locked.png` (Book detail page: Atomic Habits with locked collection banner)
 
-*All screenshots are also uploaded and embedded directly inside Frontend PR #17.*
+*All screenshots are also rendered live inside Frontend PR #17.*
 
 ---
 
@@ -101,11 +103,12 @@ Any attempt to push directly to `dev`, `develop`, or `main` fails immediately wi
 
 1. **Review Backend Pull Request**:
    - Visit [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18)
-   - Inspect the **67 files changed (+2,247 / -508)** covering ESLint flat config, Prettier, Husky, CI workflow, and test pipeline.
-   - Confirm CI checks pass.
+   - Inspect the **67 files changed (+2,247 / -508)**.
+   - Confirm CI check is green (PASS).
 2. **Review Frontend Pull Request**:
    - Visit [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17)
-   - Inspect the **123 files changed (+2,909 / -1,858)** covering 48 legacy ESLint fixes, strict TypeScript models, Prettier formatting, Husky hooks, mobile screenshots, and Next.js build verification.
-   - Confirm CI checks pass.
+   - Inspect the **123 files changed (+2,916 / -1,865)**.
+   - Confirm CI check is green (PASS).
+   - Review the full-page real-data mobile screenshots rendered in the PR description.
 3. **Merge**:
    - Merge both PRs directly on GitHub into `dev` and `develop`.

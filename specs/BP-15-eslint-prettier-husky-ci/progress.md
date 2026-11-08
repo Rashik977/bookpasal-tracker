@@ -55,7 +55,6 @@ status: completed
   - `npx tsc --noEmit`: 0 errors.
   - `npm test`: 2 passed (2 test files).
   - `npm run build`: Exit code 0.
-  - Mobile viewport screenshot saved to `evidence/fe-mobile-smoke.png`.
 - Commit: `bfa1e23` ("BP-15 slice 2: eliminate 48 legacy ESLint errors and add typed API models").
 
 ## Slice 3 Progress (Completed)
@@ -70,6 +69,7 @@ status: completed
   - `eslint.config.mjs` integration with `eslintConfigPrettier`.
   - `.github/workflows/ci.yml` (Lint, format:check, typecheck, tests, and production build on PRs to `develop`).
   - Prettier run formatted entire frontend repository cleanly.
+  - Migrated font loader to `next/font/local` using `.woff2` binaries stored in `public/fonts/` (`Outfit.woff2`, `DMSans.woff2`) to resolve upstream Next.js Google font loader crash in CI runners.
 - Tests: `bookpasal_frontend/tests/pipeline.test.ts` created and passing.
 - Verification:
   - `npm run format:check`: All files clean.
@@ -77,11 +77,11 @@ status: completed
   - `npx tsc --noEmit`: 0 errors.
   - `npm test`: 4 passed (3 test files).
   - `npm run build`: Exit code 0.
-  - Mobile viewport screenshot saved to `evidence/fe-pipeline-mobile-check.png`.
   - Pre-commit hook verified during git commit.
 - Commits:
   - `7f4da38`: "BP-15 slice 3: configure Prettier, Husky git hooks, and GitHub Actions CI in frontend"
   - `5d61bad`: "BP-15 review: strengthen question payload types, robust lint assertion, and executable hook permissions"
+  - `06fa7e9`: "BP-15: self-host fonts with next/font/local to resolve CI build failure"
 
 ## Review & Remediation (Completed)
 - Parallel sub-agents ran Standards and Spec code reviews.
@@ -91,28 +91,29 @@ status: completed
   3. Created `AuthUser` type and refactored `QuestionSection.tsx`.
   4. Updated `tests/lint.test.ts` regex assertion to prevent false positives.
   5. Updated frontend `package.json` lint script to `eslint .`.
-  6. Captured multi-page mobile screenshots (`fe-mobile-home.png`, `fe-mobile-book.png`, `fe-mobile-collection.png`, `fe-mobile-orders.png`).
+  6. Captured full-page mobile screenshots with real backend data (`fe-mobile-home.png`, `fe-mobile-book.png`, `fe-mobile-collection.png`, `fe-mobile-book-locked.png`).
+  7. Migrated Google fonts to local fonts in `app/layout.tsx` to fix CI build failure.
 
-## Pull Requests Created
-- **Backend PR**: [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18) (Target: `dev`)
-- **Frontend PR**: [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17) (Target: `develop`)
+## Pull Requests Created & Verified
+- **Backend PR**: [prashantmgk/bookpasal_backend#18](https://github.com/prashantmgk/bookpasal_backend/pull/18) (Target: `dev`) - CI **PASS**
+- **Frontend PR**: [prashantmgk/bookpasal_frontend#17](https://github.com/prashantmgk/bookpasal_frontend/pull/17) (Target: `develop`) - CI **PASS**
 - Linked Issue: `Refs Rashik977/bookpasal-tracker#15`
 
 ## Overall Verification Summary
 - **Backend (`bookpasal_backend`)**:
+  - CI: PASS (42s)
   - `npm run format:check`: PASS
   - `npm run lint`: PASS (0 errors, 0 warnings)
   - `npm test`: PASS (5 tests across 2 test files)
 - **Frontend (`bookpasal_frontend`)**:
+  - CI: PASS (1m 11s)
   - `npm run format:check`: PASS
   - `npm run lint`: PASS (0 errors, 41 legacy non-error warnings)
   - `npx tsc --noEmit`: PASS (0 errors)
   - `npm test`: PASS (4 tests across 3 test files)
   - `npm run build`: PASS (Exit code 0)
 - **Evidence**:
-  - `evidence/fe-mobile-home.png`
-  - `evidence/fe-mobile-book.png`
-  - `evidence/fe-mobile-collection.png`
-  - `evidence/fe-mobile-orders.png`
-  - `evidence/fe-mobile-smoke.png`
-  - `evidence/fe-pipeline-mobile-check.png`
+  - `evidence/fe-mobile-home.png` (Full page mobile home with real books and collections)
+  - `evidence/fe-mobile-book.png` (Full page mobile book detail with real data)
+  - `evidence/fe-mobile-collection.png` (Full page mobile collection detail with items & Q&A)
+  - `evidence/fe-mobile-book-locked.png` (Full page mobile locked collection book)
